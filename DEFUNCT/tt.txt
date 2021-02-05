@@ -1,0 +1,22 @@
+temp minimum: infinite table
+
+current locatin go through list distance of current location to one.
+
+HUB
+A : 10 = new minimum
+B : 9 = new minimum
+C : 7 = new minimum
+D : 11
+E : 12
+
+
+location = A
+location = B
+location = C
+
+List { A B C D E }
+
+List remove c now
+
+List { A B D E }
+
