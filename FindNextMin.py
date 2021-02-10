@@ -1,4 +1,6 @@
-def recursive_checker(mini, mini_key, value_list, key_list, load, new_load):
+
+# erase the minimum value provided in the value list and find the new min, then return the new min key.
+def find_next_min(mini, mini_key, value_list, key_list, load, new_load):
     found = False
 
     if mini in value_list:
@@ -8,12 +10,14 @@ def recursive_checker(mini, mini_key, value_list, key_list, load, new_load):
 
     mini = 100.0
     for value in value_list:
+        if mini is None:
+            continue
         if float(value) < float(mini):
             mini = float(value)
 
 
     # Fixed up the names to be different from the rest of the code
-    if mini is not None and mini is not 100.0:
+    if mini is not None and mini != 100.0:
 
         new_mini_key = key_list[value_list.index(float(mini))]
         return new_mini_key

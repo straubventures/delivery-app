@@ -2,8 +2,8 @@ from TwoPackagesLeft import two_packages_left
 from OnePackageLeft import one_package_left
 from CleanString import clean_string
 
-
-def package_loader(package, packages, trucks, grouped, deadline, free_and_clear, delayed, truck, load1, load2, load3,
+# load the critical packages onto the proper loads first.
+def package_loader(package, packages, grouped, deadline, free_and_clear, delayed, truck, load1, load2, load3,
                    every_package):
     replaced = clean_string(package)
 
@@ -91,87 +91,91 @@ def package_loader(package, packages, trucks, grouped, deadline, free_and_clear,
     # sent to a single address.
     for package_unit in all_packages:
 
+
+
         # If the package actually exists
         if len(package_unit) > 2:
 
             if package_unit[7].startswith(" Wrong address"):
                 package_unit[1] = ' 410 S State St'
-                inclusive3.append(package_unit)
+                load3.append(package_unit)
+                return
+
+            # If the comments section starts with this phrase, then they are added to the "grouped" list.
+            elif package_unit[7].startswith(' Must be delivered with'):
+                inclusive1.append(package_unit)
+
+
+            # If the time starts with a 9 or 10, then add them to
+            # the global deadline list. These are the only two start hour times included in the sample data.
+            elif package_unit[5].startswith('9'):
+                inclusive1.append(package_unit)
+
+
+            elif package_unit[0] == '13' or package_unit[0] == '15' or package_unit[0] == '19' or \
+                    package_unit[0] == '14':
+                inclusive1.append(package_unit)
+
+            # If the time starts with a 9 or 10, then add them to
+            # the global deadline list. These are the only two start hour times included in the sample dat
+            elif package_unit[5].startswith(' 10') or package_unit[5].startswith('10'):
+                inclusive1.append(package_unit)
+                inclusive2.append(package_unit)
+
 
             elif package_unit[1].startswith(' 410 S State St'):
                 inclusive3.append(package_unit)
 
-            elif package_unit[0] == '13' or package_unit[0] == '15' or package_unit[0] == '19':
-                for package in all_packages:
-                    print("This definitely happened")
-                    inclusive1.append(package)
 
-            elif package_unit[1].startswith(" 3365"):
-                for package1 in all_packages:
-                    inclusive2.append(package1)
-
-
-            elif package_unit[1].startswith(" 355"):
-                for package1 in all_packages:
-                    inclusive3.append(package1)
-
-
-            # First filter: Does this package have a deadline.
-            elif package_unit[5].endswith("AM") or package_unit[5].endswith("PM"):
-
-                # If the time starts with a 9 or 10, then add them to
-                # the global deadline list. These are the only two start hour times included in the sample data.
-                if package_unit[5].startswith('9'):
-
-                    for package in all_packages:
-                        inclusive1.append(package)
-
-                elif package_unit[5].startswith(' 10'):
-                    deadline.append(package_unit)
-                    package_adder(package_unit)
-
-
-
-            # If the comments section starts with this phrase, then they are added to the "grouped" list.
-            elif package_unit[7].startswith(' Must be delivered with'):
-                for package in all_packages:
-                    inclusive1.append(package)
-
-
-            # Add package to global delayed list if a delay is mentioned in the comments.
-            elif package_unit[7].startswith(" Delayed on flight") or package_unit[7].startswith("Delayed on flight"):
+            elif package_unit[1].startswith(" 3365") or package_unit[1].startswith(" 2300"):
                 inclusive2.append(package_unit)
                 inclusive3.append(package_unit)
 
 
+            elif package_unit[1].startswith(" 355"):
+                inclusive3.append(package_unit)
+
+            elif package_unit[1].startswith(" 1060"):
+                inclusive3.append(package_unit)
+
+                # Add package to global delayed list if a delay is mentioned in the comments.
+            elif package_unit[7].startswith(" Delayed on flight") or package_unit[7].startswith("Delayed on flight"):
+                inclusive2.append(package_unit)
+                inclusive3.append(package_unit)
 
             # Add package to trucks list
             elif package_unit[7].startswith(" Can only be"):
-                truck.append(package_unit)
-                package_adder(package_unit)
+                inclusive3.append(package_unit)
+                inclusive1.append(package_unit)
 
             else:
-                free_and_clear.append(package_unit)
-                package_adder(package_unit)
-        else:
-            free_and_clear.append(package_unit)
+                pass
 
 
-    if len(inclusive1) == len(all_packages) and len(load1) < 17 - len(all_packages):
-        for each_package in all_packages:
-            load1.append(each_package)
-
-    elif len(inclusive2) == len(all_packages) and len(load2) < 17 - len(all_packages):
-        for each_package in all_packages:
-            load2.append(each_package)
+    if len(package_1) < 2:
         return
 
-    elif len(inclusive3) == len(all_packages) and len(load3) < 17 - len(all_packages):
+# if all the packages filtered through into one of the inclusives, then add them to that load.
+    if len(inclusive1) == len(all_packages) and package_1[0] != '28' and len(load1) < 17 - len(all_packages) and len(all_packages) > 1 or package_1[0] == '19' or package_1[0] == '14':
+        for each_package in all_packages:
+            load1.append(each_package)
+            every_package.remove(each_package)
+
+    elif len(inclusive2) == len(all_packages) and len(load2) < 17 - len(all_packages) and len(all_packages) > 1:
+        for each_package in all_packages:
+            load2.append(each_package)
+            every_package.remove(each_package)
+        return
+
+    elif package_1[7].lstrip().startswith('Can only') or len(inclusive3) == len(all_packages) and len(load3) < 17 - len(all_packages) and len(all_packages) > 1:
         for each_package in all_packages:
             load3.append(each_package)
+            every_package.remove(each_package)
         return
     else:
         pass
+
+
 
 
 

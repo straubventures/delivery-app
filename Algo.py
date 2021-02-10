@@ -1,20 +1,17 @@
-from RecursiveNN import *
+from CreateGraph import create_graph
+from FindNextMin import *
 
-def nearest_neighbor(copy_min_table2, load, distances):
-    print("\n\n\n")
-    print("STARTING A NEW LOAD")
-    print("\n\n\n")
+
+def nearest_neighbor(min_graph, load, distances):
+
     new_load = [[0, "HUB", 1]]
-    min_table3 = []
-    for list in copy_min_table2:
-        min_table3.append(list.copy())
+    copy_min_graph = {}
+    # create new graph that can be used without altering the actual location data structure
+    copy_min_graph = create_graph(distances, copy_min_graph)
 
-    # The main loop is going through the packages and deciding what to add based on what is closest
-    # to that package. However,this does not take into account the most recent package added to new_load.
-    # Thus, the primary loop is flawed, and needs to be altered such that it does reflect the most recent package added.
 
     i = 0
-    while i < len(new_load):
+    while i < len(load):
 
         # Create a value list for each package
         value_list = []
@@ -24,23 +21,24 @@ def nearest_neighbor(copy_min_table2, load, distances):
 
 
         # Loop through all the distance lists
-        for place, index in enumerate(distances):
+        for place, index in enumerate(new_load):
 
-            # If the distance list FROM address matches the current package_1 address
-            if index[0] == new_load[i][1].lstrip():
+            if place == len(new_load) - 1:
+
                 # Capture all the distances for the TO locations
-
+                from_location = copy_min_graph[index[1].lstrip()]
                 # Remove any items that have already been added to the new load.
                 for item in new_load:
-                    if item[1].lstrip() in min_table3[place]:
-                        min_table3[place].pop(item[1].lstrip())
+                    to_location = item[1].lstrip()
+                    if to_location in from_location:
+                        from_location.pop(to_location)
 
                 # Capture all distances that lead to the current FROM location
-                for each_value in min_table3[place].values():
+                for each_value in from_location.values():
                     value_list.append(float(each_value))
 
                 # Capture all the addresses for the TO locations
-                for each_key in min_table3[place].keys():
+                for each_key in from_location.keys():
                     key_list.append(each_key)
 
                 # Capture the small distance
@@ -71,12 +69,23 @@ def nearest_neighbor(copy_min_table2, load, distances):
                         else: continue
                     if found is False:
                         mini = value_list[key_list.index(mini_key)]
-                        mini_key = recursive_checker(mini, mini_key, value_list, key_list, load, new_load)
+                        mini_key = find_next_min(mini, mini_key, value_list, key_list, load, new_load)
 
                         if mini_key is None:
                             break
-        i += 1
+        i = len(new_load)
         continue
 
-    # Indented this forward to actually match the main loop.
+    # prioritize deadline packages by moving them to the front of the load.
+    for item in new_load:
+        if len(item) > 4:
+            if item[5].lstrip().startswith("10") or item[5].lstrip().startswith("9"):
+                new_load.remove(item)
+                new_load.insert(1, item)
+                for item_2 in new_load:
+                    if item_2[1] == item[1]:
+                        new_load.remove(item_2)
+                        new_load.insert(1, item_2)
+
+
     return new_load

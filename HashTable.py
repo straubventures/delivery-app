@@ -1,3 +1,4 @@
+# Custom hash table data structure constructor and helper methods
 class HashTable(object):
 
     def __init__(self, starting_capacity=64):
@@ -53,6 +54,26 @@ class HashTable(object):
                 else:
                     i += 1
 
+    def search_id(self, key, pid):
+        get_hash = self.get_hash(key)
+        bucket = self.table[get_hash]
+
+        if len(bucket) == 0:
+            return
+        else:
+            for y, each in enumerate(bucket):
+                if bucket[y][1] == key and bucket[y][0] == pid:
+                    return bucket[y]
+            i = 0
+            while i < len(self.table):
+                next_bucket = self.table[get_hash + i % 64]
+                if len(next_bucket) == 0:
+                    return bucket
+                if next_bucket[0][1] == key:
+                    return next_bucket
+                else:
+                    i += 1
+
     def remove(self, key):
         bucket = self.get_hash(key) % len(self.table)
         bucket_list = self.table[bucket]
@@ -76,3 +97,8 @@ class HashTable(object):
                     print("The Deadline for Delivery is: " + str(item[0][5]))
                     print("Details for this package are: " + str(item[0][7]))
                     return
+
+    def insert_delivery_status(self, load):
+        for item in load:
+            package = self.search_id(item[1].lstrip(), item[0].lstrip())
+            package.append(item[8])

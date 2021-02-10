@@ -1,6 +1,6 @@
 from FindMissingData import find_missing_data
 
-
+# Formatter used in package loader when there are two packages remaining.
 def two_packages_left(remaining_packages, package_1, package_2, package_3):
 
     # Initialize counter.
@@ -20,7 +20,7 @@ def two_packages_left(remaining_packages, package_1, package_2, package_3):
     while r < len(remaining_packages) - 8:
         remaining_packages.remove(remaining_packages[r])
 
-    # If there are still package data inside the array...
+    # If there are still package data inTside the array...
     if len(remaining_packages) >= 1:
         s = 0
 

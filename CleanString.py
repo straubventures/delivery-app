@@ -4,6 +4,5 @@ def clean_string(package):
     replaced = str(package).replace('[', '', -1)
     replaced = str(replaced).replace(']', '', -1)
     replaced = str(replaced).replace('\'', '', -1)
-    print(replaced)
 
     return replaced
