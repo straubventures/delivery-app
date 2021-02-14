@@ -2,7 +2,7 @@ from CreateGraph import create_graph
 from FindNextMin import *
 
 
-def nearest_neighbor(min_graph, load, distances):
+def greedy_algo(min_graph, load, distances):
 
     new_load = [[0, "HUB", 1]]
     copy_min_graph = {}

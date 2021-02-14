@@ -100,5 +100,6 @@ class HashTable(object):
 
     def insert_delivery_status(self, load):
         for item in load:
-            package = self.search_id(item[1].lstrip(), item[0].lstrip())
-            package.append(item[8])
+            if 1 < len(item) < 4:
+                package = self.search_id(item[1].lstrip(), item[0].lstrip())
+                package.append(item[8])

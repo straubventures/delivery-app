@@ -99,6 +99,7 @@ def package_loader(package, packages, grouped, deadline, free_and_clear, delayed
             if package_unit[7].startswith(" Wrong address"):
                 package_unit[1] = ' 410 S State St'
                 load3.append(package_unit)
+                every_package.remove(package_unit)
                 return
 
             # If the comments section starts with this phrase, then they are added to the "grouped" list.
