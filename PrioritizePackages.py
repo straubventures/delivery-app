@@ -1,13 +1,10 @@
-from TwoPackagesLeft import two_packages_left
-from OnePackageLeft import one_package_left
-from CleanString import clean_string
+from Utility import *
+
 
 # load the critical packages onto the proper loads first.
-def package_loader(package, packages, grouped, deadline, free_and_clear, delayed, truck, load1, load2, load3,
+def package_loader(package, load1, load2, load3,
                    every_package):
     replaced = clean_string(package)
-
-    type_list = [grouped, deadline, free_and_clear, delayed, truck]
 
     # Initialize global placeholders for each of the packages that will go to a certain destination.
     package_1 = []

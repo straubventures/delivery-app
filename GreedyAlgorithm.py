@@ -1,13 +1,12 @@
-from CreateGraph import create_graph
-from FindNextMin import *
+from Utility import create_graph, find_next_min
 
 
-def greedy_algo(min_graph, load, distances):
+def greedy_algo(load, distances):
 
     new_load = [[0, "HUB", 1]]
-    copy_min_graph = {}
+
     # create new graph that can be used without altering the actual location data structure
-    copy_min_graph = create_graph(distances, copy_min_graph)
+    copy_min_graph = create_graph(distances)
 
 
     i = 0
