@@ -1,6 +1,6 @@
 
 # Fill in the remaining gaps in the loads with the rest of the packages.
-def truck_loader(loads, min_graph, every_package):
+def add_remaining_packages(loads, min_graph, every_package):
     while len(every_package) > 0:
         for package in every_package:
             min_distance = 1000

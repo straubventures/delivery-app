@@ -2,8 +2,8 @@ from Utility import *
 
 
 # load the critical packages onto the proper loads first.
-def package_loader(package, load1, load2, load3,
-                   every_package):
+def prioritize_packages(package, load1, load2, load3,
+                        every_package):
     replaced = clean_string(package)
 
     # Initialize global placeholders for each of the packages that will go to a certain destination.

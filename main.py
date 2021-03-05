@@ -1,10 +1,9 @@
 # Nathan Straub - ID: 001514364
-# I am using the nearest neighbor algorithm, modified with a priority queue based on customer requirements.
 
 from GreedyAlgorithm import greedy_algo
 from HashTable import HashTable
-from PrioritizePackages import package_loader
-from AddRemainingPackages import truck_loader
+from PrioritizePackages import prioritize_packages
+from AddRemainingPackages import add_remaining_packages
 import csv
 from Utility import *
 from datetime import *
@@ -24,13 +23,13 @@ packages = get_packages()
 # Add packages to loads based on constraints
 z = 0
 while z < len(distances):
-    package_loader(packages.search(distances[z][0]), load1, load2, load3, every_package)
+    prioritize_packages(packages.search(distances[z][0]), load1, load2, load3, every_package)
     z += 1
 
 master_load = [load1, load2, load3]
 
 # add all the remaining packages
-truck_loader(master_load, distance_graph, every_package)
+add_remaining_packages(master_load, distance_graph, every_package)
 
 # create efficiently navigated paths for each load
 new_load1 = greedy_algo(load1, distances)
